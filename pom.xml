@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <artifactId>httprobot</artifactId>
+  <groupId>de.elatexam</groupId>
+  <version>1.0.0-SNAPSHOT</version>
+  <packaging>jar</packaging>
+  <name>HTTP robot</name>
+  <description>Automatic scriptable http bot</description>
+  <developers>
+    <developer>
+      <name>Oliver Niedtner</name>
+    </developer>
+    <developer>
+      <name>Steffen Dienst</name>
+    </developer>
+  </developers>
+  <scm>
+    <connection>
+      scm:svn:https://elateportal.svn.sourceforge.net/svnroot/elateportal/trunk/httpbot
+    </connection>
+    <developerConnection>
+      scm:svn:https://elateportal.svn.sourceforge.net/svnroot/elateportal/trunk/httpbot
+    </developerConnection>
+    <tag>HEAD</tag>
+    <url>
+      http://elateportal.svn.sourceforge.net/viewvc/elateportal/trunk/httpbot
+    </url>
+  </scm>
+
+  <dependencies>
+    <dependency>
+      <groupId>httpunit</groupId>
+      <artifactId>httpunit</artifactId>
+      <version>1.7</version>
+    </dependency>
+    <dependency>
+      <groupId>org.jdom</groupId>
+      <artifactId>jdom</artifactId>
+      <version>1.1</version>
+    </dependency>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>1.2.16</version>
+    </dependency>
+
+  </dependencies>
+  <build>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <configuration>
+          <source>1.5</source>
+          <target>1.5</target>
+          <encoding>UTF8</encoding>
+          <maxmem>300M</maxmem>
+          <optimize>true</optimize>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-source-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>attach-source</id>
+            <goals>
+              <goal>jar</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+      <!-- buildnumber -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>buildnumber-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>make-buildnumber</id>
+            <phase>validate</phase>
+            <goals>
+              <goal>create</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <doUpdate>false</doUpdate>
+          <doCheck>false</doCheck>
+          <format>{0,date,yyyyMMdd}</format>
+          <items>
+            <item>timestamp</item>
+          </items>
+        </configuration>
+      </plugin>
+      <!--
+        erstelle eclipse projekte aus unterprojekten mit 'mvn
+        eclipse:eclipse'
+      -->
+      <plugin>
+        <artifactId>maven-eclipse-plugin</artifactId>
+        <configuration>
+          <projectNameTemplate>[artifactId]</projectNameTemplate>
+          <downloadSources>true</downloadSources>
+          <downloadJavadocs>true</downloadJavadocs>
+          <wtpmanifest>false</wtpmanifest>
+          <wtpapplicationxml>true</wtpapplicationxml>
+          <wtpversion>2.0</wtpversion>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
