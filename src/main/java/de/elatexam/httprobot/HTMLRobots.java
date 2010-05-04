@@ -24,7 +24,7 @@
  *
  */
 
-package WWWRobot;
+package de.elatexam.httprobot;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,9 +38,10 @@ import java.lang.reflect.*;
 
 import org.jdom.Element;
 
-import WWWRobot.Robot;
 
 import com.meterware.httpunit.*;
+
+import de.elatexam.httprobot.Robot;
 
 /**
  * Die Klasse HTMLRobots beinhaltet die einzelnen, speziellen

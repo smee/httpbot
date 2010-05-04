@@ -27,7 +27,7 @@
  * version of this file under either the License or the GPL.
  */
 
-package WWWRobot;
+package de.elatexam.httprobot;
 
 import java.security.AccessController;
 import java.security.InvalidAlgorithmParameterException;
