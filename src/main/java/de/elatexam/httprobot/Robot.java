@@ -194,7 +194,7 @@ public class Robot {
 
 			
 			Robot.logger.addAppender(new FileAppender(new SimpleLayout(), filename, false));
-			Robot.logger.fatal("LogFile: " + filename);
+			Robot.logger.info("LogFile: " + filename);
 		} // if Protokoll
 
 		// Parameter
@@ -208,8 +208,8 @@ public class Robot {
 			} // for
 		} // if Parameter
 
-		Robot.logger.fatal("LogLevel: " + Robot.logger.getLevel());
-		Robot.logger.fatal("LogLevel: Zum �ndern den Start-Parameter ('LogLevel:ALL|TRACE|DEBUG|INFO|WARN|ERROR|FATAL') oder STEP-Element CONFIG verwenden.");
+		Robot.logger.info("LogLevel: " + Robot.logger.getLevel());
+		Robot.logger.info("LogLevel: Zum �ndern den Start-Parameter ('LogLevel:ALL|TRACE|DEBUG|INFO|WARN|ERROR|FATAL') oder STEP-Element CONFIG verwenden.");
 
 
 
@@ -500,6 +500,7 @@ public class Robot {
 		if ((name != null) && (name != "")) {
 			//Unterscheidung der Verarbeitung: Value als String oder Boolean
 			//1. Verarbeitung als String
+		  Robot.logger.setLevel(Level.WARN);
 			if (name.equals("LogLevel")) {
 				// ALL | TRACE | DEBUG | INFO | WARN | ERROR | FATAL | OFF
 				Robot.logger.setLevel(Level.toLevel(sValue.toUpperCase(), Level.WARN));

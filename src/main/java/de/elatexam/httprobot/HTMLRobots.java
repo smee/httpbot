@@ -183,6 +183,10 @@ public class HTMLRobots {
     if (!robot.getPending(linkName).equals("")) {
       linkName = robot.getPending(linkName);
     }
+    for(WebLink link:robot.getLastWebResponse().getLinks())
+      if(link.getURLString().contains("view.php"))
+        System.out.println(link);
+    
     WebLink link = robot.getLastWebResponse().getLinkWith(linkName);
 		if (link == null) link = robot.getLastWebResponse().getLinkWithName(linkName);
 		if (link == null) link = robot.getLastWebResponse().getLinkWithID(linkName);
