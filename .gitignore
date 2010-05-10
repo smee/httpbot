@@ -2,5 +2,5 @@ target/
 .classpath
 .settings/
 .project
-/log
-/files
+/log/
+/files/
