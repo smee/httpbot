@@ -35,8 +35,9 @@ import java.io.InputStream;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.LinkedList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Level;
 import org.jdom.Document;
@@ -81,7 +82,7 @@ public class Robot {
 	private HTMLRobots htmlRobots = null;
 	private Boolean ContinueIfError = true;
 
-	private LinkedList<String> pending = null;
+  private final Map<String, Map<String, String>> pending;
 
 	private WebResponse lastWebResponse = null;
 	private byte[] lastByteResult = null;
@@ -101,10 +102,10 @@ public class Robot {
    *
    * @throws Exception
    */
-	public Robot(final String[] parameters) throws Exception {
+  public Robot(final String[] parameters) {
 		this.htmlRobots = new HTMLRobots();
 		this.httpClient = new WebConversation();
-		this.pending = new LinkedList<String>();
+    this.pending = new HashMap<String, Map<String, String>>();
 
 		this.lastByteResult = null;
 		this.lastTextResult = null;
@@ -144,10 +145,12 @@ public class Robot {
   public void init(final String[] parameters) {
 
 		// Parameter
-		this.pending = new LinkedList<String>();
 		if ((parameters != null)) {
 			for (final String param : parameters) {
 			  final String[] params = param.split(":");
+        if (params.length != 2) {
+          throw new IllegalArgumentException("Invalid parameter syntax, expected: 'name:value', but was: " + param);
+        }
 				if (!this.setHttpClientParameters(params[0], params[1])) {
 					this.setPending("param", params[0], params[1]);
 				} //if Parameter ist zur Konfiguration
@@ -368,28 +371,26 @@ public class Robot {
 	} // getPending
 
 
-	/**
-	 * Gibt Wert zuvor gespeicherter Daten zur�ck.<br>
-	 * Aufrufbeispiel Parameter: Robot.getPending("param","PARAMETERNAME")<br>
-	 *
-	 *
-	 * @param type
-	 *            Typ der Daten
-	 * @param name
-	 *            Name der Daten
-	 * @return Wert
-	 * @throws Exception
-	 */
-	String getPending(final String type, final String name) throws Exception {
-		if ((this.pending != null) && (this.pending.isEmpty() == false)) {
-			for (final String note : this.pending) {
-				if (note.split("=")[0].equals(type + ":" + name)) {
-					return note.split("=")[1];
-				} // if
-			} // for
-		} // if
-		return "";
-	} // getPending
+  /**
+   * Gibt Wert zuvor gespeicherter Daten zur�ck.<br>
+   * Aufrufbeispiel Parameter: Robot.getPending("param","PARAMETERNAME")<br>
+   *
+   *
+   * @param type
+   *          Typ der Daten
+   * @param name
+   *          Name der Daten
+   * @return Wert
+   * @throws Exception
+   */
+  String getPending(final String type, final String name) throws Exception {
+    final Map<String, String> valuesOfType = this.pending.get(type);
+    String result = "";
+    if (valuesOfType != null) {
+      result = valuesOfType.get(name);
+    }
+    return result;
+  }
 
 
 	/**
@@ -404,21 +405,13 @@ public class Robot {
 	 * @throws Exception
 	 */
   void setPending(final String type, final String name, final String value) {
-		if ((type != null) && (name != null) && (value != null)
-				&& (!type.equals("")) && (!name.equals(""))) {
-			if (this.pending != null) {
-				if (this.pending.isEmpty() == false) {
-					for (int i = 0; i < this.pending.size() - 1; i++) {
-						if (this.pending.get(i).split("=")[0] == (type + ":" + name)) {
-							this.pending.set(i, type + ":" + name + "=" + value);
-							return;
-						} // if
-					} // for
-				} // if empty
-				this.pending.add(type + ":" + name + "=" + value);
-			} // if this.pending != null
-		} // if
-	} // setPending
+    Map<String, String> map = pending.get(type);
+    if (map == null) {
+      map = new HashMap<String, String>();
+      pending.put(type, map);
+    }
+    map.put(name, value);
+  }
 
 
 	/**
@@ -531,11 +524,9 @@ public class Robot {
 		Robot.logger.info("   LogLevel: " + Robot.logger.getLevel());
 
 		//Logging Pending
-		if (Robot.logger.isTraceEnabled() && (this.pending != null) && (this.pending.isEmpty() == false)) {
-			Robot.logger.trace("Pending:");
-			for (final String note : this.pending) {
-				Robot.logger.trace(note);
-			} // for
+    if (Robot.logger.isTraceEnabled() && (this.pending.isEmpty() == false)) {
+      Robot.logger.trace("Pending: ");
+      Robot.logger.trace(pending);
 		} // if
 	} //printLoggerWebClient
 
