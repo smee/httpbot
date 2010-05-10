@@ -1,0 +1,19 @@
+This library uses httpunit for simulating a web browsing session. All browsing commands
+get specified via a xml file. A batch of browsing commands is called 'robotPlan'. This plan consists
+of steps. The resulting download after each step can be retrieved.
+
+Implemented steps can be looked up in de.elatexam.httprobot.
+
+
+The main method is in de.elatexam.httprobot.
+
+Calling
+=======
+
+Calling example: java -cp target/classes <robotplan-xml> <parameters...>
+where parameters look like 'name:value'. 
+
+loglevel is a fixed parameter which toggles the details of log messages. Logfiles will be found
+in ./log.
+
+
