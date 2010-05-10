@@ -183,10 +183,6 @@ public class HTMLRobots {
     if (!robot.getPending(linkName).equals("")) {
       linkName = robot.getPending(linkName);
     }
-    for(WebLink link:robot.getLastWebResponse().getLinks())
-      if(link.getURLString().contains("view.php"))
-        System.out.println(link);
-    
     WebLink link = robot.getLastWebResponse().getLinkWith(linkName);
 		if (link == null) link = robot.getLastWebResponse().getLinkWithName(linkName);
 		if (link == null) link = robot.getLastWebResponse().getLinkWithID(linkName);
@@ -195,6 +191,24 @@ public class HTMLRobots {
 		return ((link != null) && robot.execHTTP(link.getRequest()));
 	} // mGET_Link
 
+	/**
+	 * Find all links whose urls contains the string <code>name</code>. Stores each url as new line
+	 * in robot.lastTestResult.
+	 * @param robot
+	 * @param mStep
+	 * @return
+	 * @throws Exception
+	 */
+	public Boolean mEXTRACT_Links(Robot robot, Element mStep) throws Exception {
+	  String linkName = mStep.getChildText("name");
+	  StringBuilder sb=new StringBuilder();
+	  for(WebLink link:robot.getLastWebResponse().getLinks())
+      if(link.getURLString().contains(linkName))
+        sb.append(link.getText()).append("\n");
+	  
+	  robot.setLastTextResult(sb.toString());
+	  return true;
+	}
 
 	
 	/**

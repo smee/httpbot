@@ -297,7 +297,7 @@ public class Robot {
 		this.lastByteResult = baos.toByteArray();
 	} // setByteResult
 
-	private void setLastTextResult(String input) {
+	void setLastTextResult(String input) {
 		Robot.logger.debug("Methode: Robot.setLastTextResult");
 		Robot.logger.trace(input);
 		this.lastTextResult = input;
