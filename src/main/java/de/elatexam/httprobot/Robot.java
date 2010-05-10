@@ -31,6 +31,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -42,6 +43,7 @@ import java.util.Map;
 import org.apache.log4j.Level;
 import org.jdom.Document;
 import org.jdom.Element;
+import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
 import com.meterware.httpunit.Button;
@@ -167,6 +169,24 @@ public class Robot {
 	} // init
 
 
+  /**
+   * Run robotPlan as specified in XML provided by an inputstream.
+   * 
+   * @param in
+   *          inputstream containing a robotplan xml
+   */
+  public void run(final InputStream in) {
+    Document xmlFile;
+    try {
+      xmlFile = new SAXBuilder().build(in);
+      this.run(xmlFile.getRootElement());
+    } catch (final JDOMException e) {
+      throw new RuntimeException(e);
+    } catch (final IOException e) {
+      throw new RuntimeException(e);
+    }
+
+  }
 	/**
 	 * Ausff�hrung des XML-Ablaufplans.<br>
 	 *
