@@ -439,7 +439,6 @@ public class Robot {
 		if ((name != null) && (name != "")) {
 			//Unterscheidung der Verarbeitung: Value als String oder Boolean
 			//1. Verarbeitung als String
-		  Robot.logger.setLevel(Level.WARN);
 			if (name.equals("LogLevel")) {
 				// ALL | TRACE | DEBUG | INFO | WARN | ERROR | FATAL | OFF
 				Robot.logger.setLevel(Level.toLevel(sValue.toUpperCase(), Level.WARN));
