@@ -206,7 +206,7 @@ public class Robot {
 	 *            XML-Rootelement (org.jdom.Element)
 	 * @throws Exception
 	 */
-	public void run(final Element eXMLRobotPlan) throws Exception {
+  public void run(final Element eXMLRobotPlan) {
 		final List<Element> lSteps = eXMLRobotPlan.getChildren("step");
 		for (final Element eStep : lSteps) {
 			this.callMethod("m" + eStep.getChildText("mode"), eStep);
@@ -606,7 +606,7 @@ public class Robot {
 
 
 	// HTMLRobots-call-Funktionen
-	private String callMethod(final String methode, final Element eStep) throws Exception {
+  private String callMethod(final String methode, final Element eStep) {
 		Robot.logger.info("Methode: Robot.callMethode -- Aufruf " + methode);
 		try {
 			return this.htmlRobots.getClass().getMethod(methode,
