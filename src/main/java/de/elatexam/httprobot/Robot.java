@@ -27,25 +27,29 @@
 
 package de.elatexam.httprobot;
 
-import org.apache.log4j.*;
-import org.apache.log4j.xml.Log4jEntityResolver;
-
-import java.util.*;
-import java.util.regex.*;
-import java.lang.reflect.*;
-import java.io.IOException;
-
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.net.URL;
-import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
-import java.text.*;
+import org.apache.log4j.Level;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.input.SAXBuilder;
 
-import org.jdom.*;
-import org.jdom.input.*;
-import org.jdom.output.*;
-
-import com.meterware.httpunit.*;
+import com.meterware.httpunit.Button;
+import com.meterware.httpunit.GetMethodWebRequest;
+import com.meterware.httpunit.HttpUnitOptions;
+import com.meterware.httpunit.WebConversation;
+import com.meterware.httpunit.WebForm;
+import com.meterware.httpunit.WebRequest;
+import com.meterware.httpunit.WebResponse;
 import com.meterware.httpunit.cookies.CookieProperties;
 
 
@@ -88,9 +92,6 @@ public class Robot {
 	
 	//logging
 	private static final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(Robot.class);
-	static {
-		BasicConfigurator.configure();
-	}
 
 	// Init, Run, Exit
 	/**
@@ -168,35 +169,7 @@ public class Robot {
 	 */
 	public void init(String protocolFileName, String[] parameters)
 			throws Exception {
-
-		//Protokoll
-		if ((protocolFileName != null) && (protocolFileName.length() > 0)) {
-			
-			//speichern im Unterverzeichnis log
-			File directory = new File("log");
-			if (!directory.exists()) {
-				//wenn Unterverzeichnis "log" nicht existent, anlegen
-				try {
-					directory.mkdir();
-				} catch (Exception e) {
-				} //try catch
-			} //if
-
-			
-			//Zusammenstellung filename Logfile
-			String filename =   protocolFileName 
-			                  + "_" 
-			                  + new SimpleDateFormat("yyyyMMdd-HHmm").format(new Date());
-			filename = filename.replaceAll("[^a-zA-Z_0-9-]", "") + ".log";
-			if (directory.exists() && directory.isDirectory()) {
-				filename = directory.getName() + File.separatorChar + filename;
-			} //if
-
-			
-			Robot.logger.addAppender(new FileAppender(new SimpleLayout(), filename, false));
-			Robot.logger.info("LogFile: " + filename);
-		} // if Protokoll
-
+	  
 		// Parameter
 		this.pending = new LinkedList<String>();
 		if ((parameters != null)) {
