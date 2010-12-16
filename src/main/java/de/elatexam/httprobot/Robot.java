@@ -149,12 +149,14 @@ public class Robot {
 		// Parameter
 		if ((parameters != null)) {
 			for (final String param : parameters) {
-			  final String[] params = param.split(":");
-        if (params.length != 2) {
+        int idx = param.indexOf(':');
+        if (idx == -1)
           throw new IllegalArgumentException("Invalid parameter syntax, expected: 'name:value', but was: " + param);
-        }
-				if (!this.setHttpClientParameters(params[0], params[1])) {
-					this.setPending("param", params[0], params[1]);
+
+        String key = param.substring(0, idx);
+        String value = param.substring(idx + 1);
+        if (!this.setHttpClientParameters(key, value)) {
+          this.setPending("param", key, value);
 				} //if Parameter ist zur Konfiguration
 			} // for
 		} // if Parameter
@@ -171,7 +173,7 @@ public class Robot {
 
   /**
    * Run robotPlan as specified in XML provided by an inputstream.
-   * 
+   *
    * @param in
    *          inputstream containing a robotplan xml
    */
@@ -289,13 +291,11 @@ public class Robot {
 	 * @return Dateiname des letzten HTTP-Response
 	 */
 	public String getLastResultName() {
-		if (this.lastResultName == null || this.lastResultName.equals("")) {
-			return "result.$$$";
-		} else if (this.lastResultName.equals(".html")) {
-			return "result.html";
-		} else {
-			return this.lastResultName;
-		} //if elsif else
+		if (this.lastResultName == null || this.lastResultName.equals(""))
+      return "result.$$$";
+    else if (this.lastResultName.equals(".html"))
+      return "result.html";
+    else return this.lastResultName;
 	}
 
 
@@ -384,9 +384,8 @@ public class Robot {
 	 * @throws Exception
 	 */
 	String getPending(final String typeName) throws Exception {
-		if (typeName != null && typeName.contains(":")) {
-			return this.getPending(typeName.split(":", 2)[0], typeName.split(":", 2)[1]);
-		}
+		if (typeName != null && typeName.contains(":"))
+      return this.getPending(typeName.split(":", 2)[0], typeName.split(":", 2)[1]);
 		return "";
 	} // getPending
 
